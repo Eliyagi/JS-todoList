@@ -1,0 +1,71 @@
+<html>
+<head>
+	<meta charset = "utf-8">
+	<meta name = "viewport" content= "width=device-width, initial-scale=1.0">
+	<meta http-equiv= "X-UA Compatible" content ="ie=edge">
+	<title>TodoTracker by Eliya Gindi</title>
+	<style>
+	body{
+		padding: 15px;
+		background-Color: #66ccff;
+		font-family: sans-serif;
+	}
+	</style>
+</head>
+
+<body>
+	<h1 id="title">todo tracker</h1>
+	<form>
+		<input type ="text" id="user-todo" placeholder="new todo" required>
+	</form>
+	
+	<h2 id = 'todo-header'>Todos</h2>
+	<ul>
+	</ul>
+	
+	<button  id = 'clear'>Clear All</button>
+	
+	<script>
+	var form = document.querySelector('form');
+	var todoList = document.querySelector('ul');
+	var button = document.querySelector('button');
+	var input = document.getElementById('user-todo');
+	
+	var todosArray = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
+	
+	localStorage.setItem('todos', JSON.stringify(todosArray));
+	
+	var storage = JSON.parse(localStorage.getItem('todos'));
+	
+	form.addEventListener('submit',function(e){
+		e.preventDefault();
+		
+		todosArray.push(input.value);
+		
+		localStorage.setItem('todos', JSON.stringify(todosArray));
+		
+		todoMaker(input.value);
+		input.value = '';
+	});
+	
+	var todoMaker =function(inputText){
+		var todo = document.createElement('li');
+		todo.textContent = inputText;
+		todoList.appendChild(todo);
+	}
+	
+	for ( var i = 0;i<storage.length;i++){
+		todoMaker(storage[i]);
+	}
+	
+	button.addEventListener('click',function(){
+		localStorage.clear();
+		while(todoList.firstChild){
+			todoList.removeChild(todoList.firstChild);
+		}
+	});
+	
+	</script>
+
+</body>
+</html>
